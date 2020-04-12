@@ -3,4 +3,3 @@ class User < ActiveRecord::Base
     "#{id}. #{name} #{email} #{password}"
   end
 end
-s
