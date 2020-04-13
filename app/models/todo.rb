@@ -1,41 +1,58 @@
-require "active_record"
-
 class Todo < ActiveRecord::Base
-  def self.overdue
-    where("due_date < ? and (not completed)", Date.today)
+  def to_pleasant_string
+    is_completed = completed ? "[X]" : "[ ]"
+    "#{id}. #{due_date.to_s(:long)} #{todo_text} #{is_completed}"
   end
+
+  def to_displayable_string
+    display_status = completed ? "[X]" : "[ ]"
+    display_date = Date.today == due_date ? nil : due_date
+    "#{id}. #{display_status} #{todo_text} #{display_date}"
+  end
+
+  def self.overdue
+    all.where("due_date < ? and (not completed)", Date.today)
+  end
+
   def self.due_today
-    where("due_date = ?", Date.today)
+    all.where("due_date = ?", Date.today)
   end
 
   def self.due_later
-    where("due_date > ?", Date.today)
+    all.where("due_date > ?", Date.today)
   end
+
   def self.completed
-    where(completed: true)
+    all.where(completed: true)
+  end
+
+  def self.not_completed
+    all.where(completed: false)
   end
 
   def self.show_list
     puts "My Todo-list\n\n"
 
     puts "Overdue\n"
-    puts overdue.to_displayable_list.join("\n")
+    puts overdue.order(:id).map { |todo| todo.to_displayable_string }
     puts "\n\n"
 
-    puts "Due Today\n"
-    puts due_today.to_displayable_list.join("\n")
+    puts "Due Today"
+    puts due_today.order(:id).map { |todo| todo.to_displayable_string }
     puts "\n\n"
 
-    puts "Due Later\n"
-    puts due_later.to_displayable_list.join("\n")
+    puts "Due Later"
+    puts due_later.order(:id).map { |todo| todo.to_displayable_string }
     puts "\n\n"
   end
-  def self.add_task(h)
-    create!(todo_text: h[:todo_text], due_date: Date.today + h[:due_in_days], completed: false)
+
+  def self.add_task(todo_hash)
+    Todo.create(todo_text: todo_hash[:todo_text], due_date: Date.today + todo_hash[:due_in_days], completed: false)
   end
-  def self.mark_as_complete!(i)
-    todo = find_by(id: i)
-    todo.update(completed: true)
-    return todo
+
+  def self.mark_as_complete!(todo_id)
+    todo_record = Todo.find(todo_id)
+    todo_record.update(completed: true)
+    todo_record
   end
 end
