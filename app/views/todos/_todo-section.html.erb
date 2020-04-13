@@ -18,9 +18,7 @@
                                     <%if show_due_date%>
                                         <p class="TodoItem-dueDate"> <%= todo.due_date.to_s(:short)%></p>
                                     <%end%>
-                                    <a class="TodoItem-delete" href="javascript:void(0)">
-                                        <img src="delete.png">
-                                    </a>
+                                    <img class="TodoItem-delete" src="delete.png">
                                  </div>
                             </li>
                         <% end%>
