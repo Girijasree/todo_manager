@@ -1,28 +1,29 @@
-<article>
-    <h1 class="TodoPageTitle">My To-do List</h1>
+                <section class="TodoSection">
+                    <div class="TodoSectionTitle">
+                        <p class="TodoSectionTitle-text">  <%= section_title %> </p>
+                        <p class="TodoSectionTitle-remainingCount"><%=todos.completed.count%>/<%= todos.count%></p>
+                    </div>
 
-    <section class="AddTodo">
-      <input class="Addtodo-text" type="text" placeholder="What's next?">
-      <input class="Addtodo-date" type="date">
-      <input class="Addtodo-Button" type="button" value="Add">
-    </section>
+                     <ul>
+                       <% todos.each do |todo|%>
+                            <li class="TodoItem">
+                                <div class="TodoItem-container">
+                                    <%if todo.completed%>
+                                         <input class="TodoItem-checkbox" type="checkbox" checked>
+                                         <p class="TodoItem-todoStrikedText"> <%= todo.todo_text%></p>
+                                    <%else%>
+                                        <input class="TodoItem-checkbox" type="checkbox">
+                                        <%= todo.todo_text%>
+                                    <%end%>
+                                    <%if show_due_date%>
+                                        <p class="TodoItem-dueDate"> <%= todo.due_date.to_s(:short)%></p>
+                                    <%end%>
+                                    <a class="TodoItem-delete" href="javascript:void(0)">
+                                        <img src="delete.png" height="12px" alt="Delete icon">
+                                    </a>
+                                 </div>
+                            </li>
+                        <% end%>
+                     </ul>
 
-
-   <%= render partial: "todo-section", locals: {
-     section_title: "Overdue",
-     todos:Todo.overdue,
-     show_due_date: true
-     }%>
-
-   <%= render partial: "todo-section", locals: {
-     section_title: "Due Today",
-     todos:Todo.due_today,
-     show_due_date: false
-     }%>
-   <%= render partial: "todo-section", locals: {
-     section_title: "Due Later",
-     todos:Todo.due_later,
-     show_due_date: true
-     }%>
-
-  </article>
+                </section>

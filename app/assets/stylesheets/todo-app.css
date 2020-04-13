@@ -92,6 +92,10 @@ body {
     color: #453c52;
 }
 
+.TodoItem-todoStrikedText {
+    text-decoration: line-through;
+}
+
 .TodoItem-container {
     align-items: center;
     display: flex;
