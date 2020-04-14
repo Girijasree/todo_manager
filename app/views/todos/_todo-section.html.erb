@@ -10,7 +10,7 @@
                                 <div class="TodoItem-container">
                                     <%if todo.completed%>
                                          <input class="TodoItem-checkbox" type="checkbox" checked>
-                                         <p class="TodoItem-strikedText"> <%= todo.todo_text%></p>
+                                         <span> <%= todo.todo_text%></span>
                                     <%else%>
                                         <input class="TodoItem-checkbox" type="checkbox">
                                         <%= todo.todo_text%>
