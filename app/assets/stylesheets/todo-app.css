@@ -103,7 +103,7 @@ body {
     height: 16px;
 }
 
-.TodoItem-checkbox:checked+span {
+.TodoItem-strikedText {
     text-decoration: line-through;
 }
 
