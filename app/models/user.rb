@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
-  has_many:todos
+  has_secure_password
+  has_many :todos
+  validates :first_name, presence: true
+  validates :email, presence: true
+
   def to_pleasant_string
     "#{id}. #{name} #{email} #{password}"
   end
