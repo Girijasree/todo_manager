@@ -1,19 +1,27 @@
 require "active_record"
 
 class Todo < ActiveRecord::Base
-  belongs_to:user
+  belongs_to :user
+  validates :todo_text, presence: true
+  validates :due_date, presence: true
+  validates :todo_text, length: { minimum: 2 }
   def self.overdue
-    where("due_date < ? and (not completed)", Date.today)
+    where("due_date < ? and (not completed)", Date.today).order(:due_date)
   end
   def self.due_today
-    where("due_date = ?", Date.today)
+    where("due_date = ?", Date.today).order(:due_date)
   end
 
   def self.due_later
-    where("due_date > ?", Date.today)
+    where("due_date > ?", Date.today).order(:due_date)
   end
+
   def self.completed
     where(completed: true)
+  end
+
+  def self.of_user(user)
+    where(user_id: user.id)
   end
 
   def self.show_list
