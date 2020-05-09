@@ -1,22 +1,32 @@
 # users_controller.rb
 class UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :ensure_user_logged_in
+
+  def new
+    render "/users/new"
+  end
 
   def index
     render plain: User.all.map { |user| user.to_pleasant_string }.join("\n")
   end
 
   def create
-    name = params[:name]
+    first_name = params[:first_name]
+    last_name = params[:last_name]
     email = params[:email]
-    password = params[:password]
-    new_user = User.create!(
-      name: name,
+    new_user = User.new(
+      first_name: first_name,
+      last_name: last_name,
       email: email,
-      password: password,
+      password: params[:password],
     )
-    response_text = "Hey, your new user is created with Id:#{new_user.id}"
-    render plain: response_text
+    if new_user.save
+      session[:current_user_id] = new_user.id
+      redirect_to todos_path
+    else
+      flash[:error] = new_user.errors.full_messages.join(",")
+      redirect_to new_user_path
+    end
   end
 
   def show
