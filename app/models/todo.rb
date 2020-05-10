@@ -48,9 +48,3 @@ class Todo < ActiveRecord::Base
     return todo
   end
 end
-
-
-
-
-
-w
